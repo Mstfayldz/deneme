@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demiryolu Rezervasyon Sistemi</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Demiryolu Rezervasyon Sistemi</h1>
+    </header>
+
+    <main>
+        <section class="arama-formu">
+            <h2>Sefer Ara</h2>
+            <form id="sefer-arama-formu">
+                <div class="form-grup">
+                    <label for="kalkis">Kalkış Noktası</label>
+                    <select id="kalkis" name="kalkis" required>
+                        <option value="Ankara Garı">Ankara Garı</option>
+                        <option value="Söğütlüçeşme">Söğütlüçeşme</option>
+                        <option value="Konya Garı">Konya Garı</option>
+                    </select>
+                </div>
+                <div class="form-grup">
+                    <label for="varis">Varış Noktası</label>
+                    <select id="varis" name="varis" required>
+                        <option value="Söğütlüçeşme">Söğütlüçeşme</option>
+                        <option value="Ankara Garı">Ankara Garı</option>
+                        <option value="Konya Garı">Konya Garı</option>
+                    </select>
+                </div>
+                <div class="form-grup">
+                    <label for="tarih">Tarih</label>
+                    <input type="date" id="tarih" name="tarih" required>
+                </div>
+                <button type="submit">Sefer Bul</button>
+            </form>
+        </section>
+
+        <section class="arama-sonuclari">
+            <h2>Uygun Seferler</h2>
+            <div id="sonuclar-listesi">
+                <!-- Arama sonuçları buraya dinamik olarak eklenecek -->
+                <p>Lütfen arama yapınız.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Demiryolu Rezervasyon Sistemi</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
