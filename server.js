@@ -21,10 +21,10 @@ const db = new sqlite3.Database(DB_FILE, (err) => {
 
 // API Rotaları (Statik dosyalardan ÖNCE tanımlanmalı)
 app.get('/api/seferler', (req, res) => {
-    const { kalkis, varis } = req.query;
+    const { kalkis, varis, tarih } = req.query;
 
-    if (!kalkis || !varis) {
-        return res.status(400).json({ error: 'Kalkış ve varış noktaları zorunludur.' });
+    if (!kalkis || !varis || !tarih) {
+        return res.status(400).json({ error: 'Kalkış, varış ve tarih zorunludur.' });
     }
 
     const sql = `
@@ -40,10 +40,13 @@ app.get('/api/seferler', (req, res) => {
         JOIN Istasyonlar kalkis_ist ON h.kalkis_istasyon_id = kalkis_ist.istasyon_id
         JOIN Istasyonlar varis_ist ON h.varis_istasyon_id = varis_ist.istasyon_id
         JOIN Trenler t ON s.tren_id = t.tren_id
-        WHERE kalkis_ist.istasyon_adi = ? AND varis_ist.istasyon_adi = ?
+        WHERE
+            kalkis_ist.istasyon_adi = ? AND
+            varis_ist.istasyon_adi = ? AND
+            DATE(s.kalkis_zamani) = ?
     `;
 
-    db.all(sql, [kalkis, varis], (err, rows) => {
+    db.all(sql, [kalkis, varis, tarih], (err, rows) => {
         if (err) {
             res.status(500).json({ error: err.message });
             return;

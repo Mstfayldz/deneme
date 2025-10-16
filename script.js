@@ -7,10 +7,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const kalkisNoktasi = event.target.elements.kalkis.value;
         const varisNoktasi = event.target.elements.varis.value;
-        // const tarih = event.target.elements.tarih.value; // Tarih parametresi API'de henüz kullanılmıyor.
+        const tarih = event.target.elements.tarih.value;
 
-        // API'ye istek atmak için URL oluştur
-        const apiUrl = `/api/seferler?kalkis=${encodeURIComponent(kalkisNoktasi)}&varis=${encodeURIComponent(varisNoktasi)}`;
+        if (!tarih) {
+            alert('Lütfen bir tarih seçiniz.');
+            return;
+        }
+
+        // API'ye istek atmak için URL oluştur (tarih eklendi)
+        const apiUrl = `/api/seferler?kalkis=${encodeURIComponent(kalkisNoktasi)}&varis=${encodeURIComponent(varisNoktasi)}&tarih=${tarih}`;
 
         try {
             const response = await fetch(apiUrl);

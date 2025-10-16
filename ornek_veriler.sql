@@ -35,22 +35,25 @@ INSERT INTO Koltuklar (vagon_id, koltuk_numarasi) VALUES
 INSERT INTO Koltuklar (vagon_id, koltuk_numarasi) VALUES
 (2, '1A'), (2, '1B'), (2, '1C'), (2, '2A'), (2, '2B'), (2, '2C');
 
--- 6. Seferleri Ekle
+-- 6. Seferleri Ekle (2025 ve 2026 için güncellendi)
 INSERT INTO Seferler (tren_id, hat_id, kalkis_zamani, varis_zamani, durum) VALUES
-(1, 1, '2024-10-20 08:00:00', '2024-10-20 12:30:00', 'Planlandı'), -- Ankara -> İstanbul
-(1, 2, '2024-10-20 14:00:00', '2024-10-20 18:30:00', 'Planlandı'), -- İstanbul -> Ankara
-(2, 3, '2024-10-21 09:00:00', '2024-10-21 10:45:00', 'Planlandı'), -- Ankara -> Konya
-(2, 4, '2024-10-21 15:00:00', '2024-10-21 16:45:00', 'Planlandı'); -- Konya -> Ankara
+-- 2025 Seferleri
+(1, 1, '2025-07-15 08:30:00', '2025-07-15 13:00:00', 'Planlandı'), -- Ankara -> İstanbul. Sefer ID: 1
+(1, 1, '2025-07-16 09:00:00', '2025-07-16 13:30:00', 'Planlandı'), -- Ankara -> İstanbul (farklı gün). Sefer ID: 2
+(1, 2, '2025-07-15 15:00:00', '2025-07-15 19:30:00', 'Planlandı'), -- İstanbul -> Ankara. Sefer ID: 3
+-- 2026 Seferleri
+(2, 3, '2026-02-20 10:00:00', '2026-02-20 11:45:00', 'Planlandı'), -- Ankara -> Konya. Sefer ID: 4
+(2, 4, '2026-02-20 18:00:00', '2026-02-20 19:45:00', 'Planlandı'); -- Konya -> Ankara. Sefer ID: 5
 
 -- 7. Kullanıcıları Ekle
 INSERT INTO Kullanicilar (ad, soyad, email, sifre, telefon) VALUES
 ('Ayşe', 'Yılmaz', 'ayse.yilmaz@example.com', 'gizli_sifre_hash', '5550001122');
 
--- 8. Örnek Rezervasyon ve Bilet Ekle
--- Ayşe Yılmaz, Ankara -> İstanbul seferine bir bilet alsın.
--- Kullanıcı ID: 1, Sefer ID: 1, Koltuk ID: 10 (Vagon 1, Koltuk 5B)
+-- 8. Örnek Rezervasyon ve Bilet Ekle (Yeni Tarihlere Göre Güncellendi)
+-- Ayşe Yılmaz, 15 Temmuz 2025 Ankara -> İstanbul seferine bir bilet alsın.
+-- Kullanıcı ID: 1, Sefer ID: 1, Koltuk ID: 5 (Vagon 1, Koltuk 3A)
 INSERT INTO Rezervasyonlar (kullanici_id, toplam_ucret) VALUES
-(1, 350.50);
+(1, 450.00);
 
 INSERT INTO Biletler (rezervasyon_id, sefer_id, koltuk_id, yolcu_ad, yolcu_soyad, pnr_kodu, bilet_fiyati) VALUES
-(1, 1, 10, 'Ayşe', 'Yılmaz', 'TRK9X1', 350.50);
+(1, 1, 5, 'Ayşe', 'Yılmaz', 'AY789X', 450.00);
