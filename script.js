@@ -2,56 +2,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const seferAramaFormu = document.getElementById('sefer-arama-formu');
     const sonuclarListesi = document.getElementById('sonuclar-listesi');
 
-    // Backend olmadığından, ornek_veriler.sql dosyasındaki verilere dayalı sahte bir veri seti kullanalım.
-    const mockSeferler = [
-        {
-            id: 1,
-            kalkis: 'Ankara Garı',
-            varis: 'Söğütlüçeşme',
-            kalkisZamani: '08:00',
-            varisZamani: '12:30',
-            trenModeli: 'YHT800'
-        },
-        {
-            id: 2,
-            kalkis: 'Söğütlüçeşme',
-            varis: 'Ankara Garı',
-            kalkisZamani: '14:00',
-            varisZamani: '18:30',
-            trenModeli: 'YHT800'
-        },
-        {
-            id: 3,
-            kalkis: 'Ankara Garı',
-            varis: 'Konya Garı',
-            kalkisZamani: '09:00',
-            varisZamani: '10:45',
-            trenModeli: 'YHT950'
-        },
-        {
-            id: 4,
-            kalkis: 'Konya Garı',
-            varis: 'Ankara Garı',
-            kalkisZamani: '15:00',
-            varisZamani: '16:45',
-            trenModeli: 'YHT950'
-        }
-    ];
-
-    seferAramaFormu.addEventListener('submit', (event) => {
+    seferAramaFormu.addEventListener('submit', async (event) => {
         event.preventDefault(); // Formun sayfayı yeniden yüklemesini engelle
 
         const kalkisNoktasi = event.target.elements.kalkis.value;
         const varisNoktasi = event.target.elements.varis.value;
-        // const tarih = event.target.elements.tarih.value; // Tarih şu anki mock yapısında kullanılmıyor.
+        // const tarih = event.target.elements.tarih.value; // Tarih parametresi API'de henüz kullanılmıyor.
 
-        // Girilen kriterlere göre seferleri filtrele
-        const uygunSeferler = mockSeferler.filter(sefer => {
-            return sefer.kalkis === kalkisNoktasi && sefer.varis === varisNoktasi;
-        });
+        // API'ye istek atmak için URL oluştur
+        const apiUrl = `/api/seferler?kalkis=${encodeURIComponent(kalkisNoktasi)}&varis=${encodeURIComponent(varisNoktasi)}`;
 
-        // Sonuçları göster
-        renderSonuclar(uygunSeferler);
+        try {
+            const response = await fetch(apiUrl);
+            if (!response.ok) {
+                throw new Error('Ağ yanıtı sorunlu: ' + response.statusText);
+            }
+            const uygunSeferler = await response.json();
+
+            // Sonuçları göster
+            renderSonuclar(uygunSeferler);
+
+        } catch (error) {
+            console.error('Seferler alınırken hata oluştu:', error);
+            sonuclarListesi.innerHTML = '<p>Seferler yüklenirken bir hata oluştu. Lütfen tekrar deneyin.</p>';
+        }
     });
 
     function renderSonuclar(seferler) {
@@ -64,15 +38,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         seferler.forEach(sefer => {
+            // Zaman formatını sadece Saat:Dakika olarak ayarla
+            const kalkisSaati = new Date(sefer.kalkis_zamani).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+            const varisSaati = new Date(sefer.varis_zamani).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+
             const seferKarti = document.createElement('div');
             seferKarti.className = 'sefer-karti';
             seferKarti.innerHTML = `
                 <div class="bilgi">
-                    <span class="saat">${sefer.kalkisZamani} - ${sefer.varisZamani}</span>
+                    <span class="saat">${kalkisSaati} - ${varisSaati}</span>
                     <br>
-                    <span>${sefer.kalkis} &rarr; ${sefer.varis}</span>
+                    <span>${sefer.kalkis_noktasi} &rarr; ${sefer.varis_noktasi}</span>
                 </div>
-                <button onclick="biletAl(${sefer.id})">Bilet Al</button>
+                <button onclick="biletAl(${sefer.sefer_id})">Bilet Al</button>
             `;
             sonuclarListesi.appendChild(seferKarti);
         });
