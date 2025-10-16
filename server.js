@@ -19,10 +19,7 @@ const db = new sqlite3.Database(DB_FILE, (err) => {
     }
 });
 
-// Statik dosyaları sun (HTML, CSS, JS)
-app.use(express.static(path.join(__dirname)));
-
-// API Rotaları
+// API Rotaları (Statik dosyalardan ÖNCE tanımlanmalı)
 app.get('/api/seferler', (req, res) => {
     const { kalkis, varis } = req.query;
 
@@ -54,6 +51,9 @@ app.get('/api/seferler', (req, res) => {
         res.json(rows);
     });
 });
+
+// Statik dosyaları sun (HTML, CSS, JS) - API rotalarından SONRA olmalı
+app.use(express.static(path.join(__dirname)));
 
 // Sunucuyu başlat
 app.listen(PORT, () => {
