@@ -1,8 +1,12 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const cors = require('cors');
 
 const app = express();
+
+// CORS ara katmanını kullan
+app.use(cors());
 const PORT = 3000;
 const DB_FILE = 'database.db';
 
