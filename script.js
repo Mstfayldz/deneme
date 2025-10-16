@@ -14,8 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // API'ye istek atmak için URL oluştur (tarih eklendi)
-        const apiUrl = `/api/seferler?kalkis=${encodeURIComponent(kalkisNoktasi)}&varis=${encodeURIComponent(varisNoktasi)}&tarih=${tarih}`;
+        // API'ye istek atmak için tam URL oluştur (tarih eklendi)
+        const apiUrl = `http://localhost:3000/api/seferler?kalkis=${encodeURIComponent(kalkisNoktasi)}&varis=${encodeURIComponent(varisNoktasi)}&tarih=${tarih}`;
 
         try {
             const response = await fetch(apiUrl);
