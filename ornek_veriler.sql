@@ -46,8 +46,12 @@ INSERT INTO Seferler (tren_id, hat_id, kalkis_zamani, varis_zamani, durum) VALUE
 (2, 4, '2026-02-20 18:00:00', '2026-02-20 19:45:00', 'Planlandı'); -- Konya -> Ankara. Sefer ID: 5
 
 -- 7. Kullanıcıları Ekle
-INSERT INTO Kullanicilar (ad, soyad, email, sifre, telefon) VALUES
-('Ayşe', 'Yılmaz', 'ayse.yilmaz@example.com', 'gizli_sifre_hash', '5550001122');
+-- Normal Kullanıcı
+INSERT INTO Kullanicilar (ad, soyad, email, sifre, telefon, isAdmin) VALUES
+('Ayşe', 'Yılmaz', 'ayse.yilmaz@example.com', 'sifre_hash_1', '5550001122', 0);
+-- Admin Kullanıcısı
+INSERT INTO Kullanicilar (ad, soyad, email, sifre, telefon, isAdmin) VALUES
+('Admin', 'User', '63ayldzmstf.21@gmail.com', '$2b$10$yeZUE4gNbcQ6pj8vlV80G.TZ8MgC1fCDpUzj/IO9U.8XcM6wa/jru', '555ADMIN', 1);
 
 -- 8. Örnek Rezervasyon ve Bilet Ekle (Yeni Tarihlere Göre Güncellendi)
 -- Ayşe Yılmaz, 15 Temmuz 2025 Ankara -> İstanbul seferine bir bilet alsın.

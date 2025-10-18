@@ -7,7 +7,8 @@ CREATE TABLE Kullanicilar (
     soyad VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     sifre VARCHAR(255) NOT NULL,
-    telefon VARCHAR(15)
+    telefon VARCHAR(15),
+    isAdmin BOOLEAN DEFAULT 0 NOT NULL
 );
 
 -- Tren istasyonlarının bilgilerini tutan tablo

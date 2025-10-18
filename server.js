@@ -3,6 +3,7 @@ const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const cors = require('cors');
 const fs = require('fs');
+const bcrypt = require('bcrypt');
 
 const app = express();
 const PORT = 3000;
@@ -59,6 +60,7 @@ function initializeDatabase() {
 }
 
 app.use(cors());
+app.use(express.json()); // POST isteklerindeki JSON body'lerini parse etmek için
 
 // API Rotaları
 app.get('/api/seferler', (req, res) => {
@@ -94,6 +96,42 @@ app.get('/api/seferler', (req, res) => {
             return;
         }
         res.json(rows);
+    });
+});
+
+app.post('/api/login', (req, res) => {
+    const { email, sifre } = req.body;
+
+    if (!email || !sifre) {
+        return res.status(400).json({ success: false, message: 'E-posta ve şifre zorunludur.' });
+    }
+
+    const sql = "SELECT * FROM Kullanicilar WHERE email = ?";
+    db.get(sql, [email], (err, user) => {
+        if (err) {
+            return res.status(500).json({ success: false, message: 'Sunucu hatası.' });
+        }
+        if (!user) {
+            return res.status(401).json({ success: false, message: 'Geçersiz e-posta veya şifre.' });
+        }
+
+        bcrypt.compare(sifre, user.sifre, (err, result) => {
+            if (err) {
+                return res.status(500).json({ success: false, message: 'Kimlik doğrulama hatası.' });
+            }
+            if (result) {
+                // Başarılı giriş
+                // Gerçek bir uygulamada burada JWT gibi bir token oluşturulur.
+                res.json({
+                    success: true,
+                    message: 'Giriş başarılı.',
+                    isAdmin: user.isAdmin === 1
+                });
+            } else {
+                // Geçersiz şifre
+                res.status(401).json({ success: false, message: 'Geçersiz e-posta veya şifre.' });
+            }
+        });
     });
 });
 
